@@ -58,7 +58,6 @@
                     <MenuItem Header="Filled"/>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Stop"/>
         </Menu>
 
     </Grid>
