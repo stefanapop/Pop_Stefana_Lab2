@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
-namespace VirtualDoughnutFactory.CustomCommands
+namespace Pop_Stefana_Lab2.CustomCommands
 {
     class StopCommand
     {

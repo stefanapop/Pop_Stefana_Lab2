@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pop_Stefana_Lab2"
-        xmlns:CustomCommands="clr-namespace:VirtualDoughnutFactory.CustomCommands"
+        xmlns:CustomCommands="clr-namespace:Pop_Stefana_Lab2.CustomCommands"
         mc:Ignorable="d"
         Title="Virtual Doughnuts Factory" Height="450" Width="800" ResizeMode="NoResize" Loaded="frmMain_Loaded">
     <Window.Background>
@@ -33,7 +33,7 @@
         <GroupBox x:Name="gbSale" Header="Current Sale" Margin="77,222,76,19" FontWeight="Bold">
             <Canvas>
                 <Label x:Name="lblQuantity" Content="Quantity" Canvas.Left="20" Canvas.Top="10" FontWeight="Normal"/>
-                <TextBox x:Name="txtQuantity" Canvas.Left="81" Canvas.Top="14" Text="0" TextWrapping="Wrap" Width="30" FontWeight="Normal"/>
+                <TextBox x:Name="txtQuantity" Canvas.Left="81" Canvas.Top="14" Text="0" TextWrapping="Wrap" Width="30" FontWeight="Normal" KeyUp="txtQuantity_KeyPress"/>
                 <Label x:Name="lblType" Content="Type" Canvas.Left="137" Canvas.Top="10" FontWeight="Normal"/>
                 <ComboBox x:Name="cmbType" Canvas.Left="177" Canvas.Top="12" Width="100" Height="18" SelectionChanged="cmbType_SelectionChanged"/>
                 <Label x:Name="lblPrice" Content="Price" Canvas.Left="291" Canvas.Top="6" FontWeight="Normal"/>
