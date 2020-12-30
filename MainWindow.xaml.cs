@@ -23,25 +23,16 @@ namespace Pop_Stefana_Lab2
         public MainWindow()
         {
             InitializeComponent();
-            //Doughnuts>Make>Filled>Lemon
-            //binding pentru comand Ctrl+P
-            CommandBinding cmd = new CommandBinding();
-            cmd.Command = ApplicationCommands.Print;
-            //asociem un handler
-            cmd.Executed += new ExecutedRoutedEventHandler(CtrlP_CommandHandler);
-            //adaugam la colectia CommandBindings
-            this.CommandBindings.Add(cmd);
-            //Doughnuts>Make>Filled>Chocolate
-            //comanda cu input gestures
+            //creare obiect binding pentru comanda
             CommandBinding cmd1 = new CommandBinding();
-            //input gesture: mouse left dbl click + ctrl
-            ApplicationCommands.Copy.InputGestures.Add(new
-             MouseGesture(MouseAction.LeftDoubleClick, ModifierKeys.Control));
-            //input gesture: alt+c
-            ApplicationCommands.Copy.InputGestures.Add(new KeyGesture(Key.C, ModifierKeys.Alt));
-            cmd1.Command = ApplicationCommands.Copy;
-            //asociem handler
-            cmd1.Executed += new ExecutedRoutedEventHandler(CtrlC_CommandHandler);
+            //asociere comanda
+            cmd1.Command = ApplicationCommands.Print;
+            //input gesture: I + Alt
+            ApplicationCommands.Print.InputGestures.Add(
+            new KeyGesture(Key.I, ModifierKeys.Alt));
+            //asociem un handler
+            cmd1.Executed += new ExecutedRoutedEventHandler(CtrlP_CommandHandler);
+            //adaugam la colectia CommandBindings
             this.CommandBindings.Add(cmd1);
             //Doughnuts>Stop
             //comanda custom
@@ -191,6 +182,8 @@ namespace Pop_Stefana_Lab2
                 lstSale.Items.Add(txtQuantity.Text + " " + selectedDoughnut.ToString() +
                ":" + txtPrice.Text + " " + double.Parse(txtQuantity.Text) *
                double.Parse(txtPrice.Text));
+                txtTotal.Text = (double.Parse(txtTotal.Text) + double.Parse(txtQuantity.Text)
+           * double.Parse(txtPrice.Text)).ToString();
             }
             else
             {
@@ -199,50 +192,60 @@ namespace Pop_Stefana_Lab2
         }
         private void btnRemoveItem_Click(object sender, RoutedEventArgs e)
         {
+            string subtotal = lstSale.SelectedItem.ToString();
+            string quantity = subtotal.Substring(0, subtotal.IndexOf(" "));
+            string price = subtotal.Substring(subtotal.IndexOf(":") + 1, subtotal.LastIndexOf(" ") - subtotal.IndexOf(":") - 1);
             lstSale.Items.Remove(lstSale.SelectedItem);
+            txtTotal.Text = (double.Parse(txtTotal.Text) - double.Parse(quantity) * double.Parse(price)).ToString();
         }
         private void btnCheckOut_Click(object sender, RoutedEventArgs e)
         {
-            txtTotal.Text = (double.Parse(txtTotal.Text) + double.Parse(txtQuantity.Text)
-           * double.Parse(txtPrice.Text)).ToString();
+            
             foreach (string s in lstSale.Items)
             {
                 switch (s.Substring(s.IndexOf(" ") + 1, s.IndexOf(":") - s.IndexOf(" ") - 1))
                 {
                     case "Glazed":
-                        mRaisedGlazed = mRaisedGlazed - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
-                        txtGlazedRaised.Text = mRaisedGlazed.ToString();
+                        if (mRaisedGlazed > 0)
+                        {
+                            mRaisedGlazed = mRaisedGlazed - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
+                            txtGlazedRaised.Text = mRaisedGlazed.ToString();
+                        }
                         break;
                     case "Sugar":
-                        mRaisedSugar = mRaisedSugar - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
-                        txtSugarRaised.Text = mRaisedSugar.ToString();
+                        if (mRaisedSugar > 0)
+                        {
+                            mRaisedSugar = mRaisedSugar - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
+                            txtSugarRaised.Text = mRaisedSugar.ToString();
+                        }
                         break;
                     case "Chocolate":
-                        mFilledChocolate = mFilledChocolate - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
-                        txtChocolateFilled.Text = mFilledChocolate.ToString();
+                        if (mFilledChocolate > 0)
+                        {
+                            mFilledChocolate = mFilledChocolate - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
+                            txtChocolateFilled.Text = mFilledChocolate.ToString();
+                        }
                         break;
                     case "Lemon":
-                        mFilledLemon = mFilledLemon - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
-                        txtLemonFilled.Text = mFilledLemon.ToString();
+                        if (mFilledLemon > 0)
+                        {
+                            mFilledLemon = mFilledLemon - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
+                            txtLemonFilled.Text = mFilledLemon.ToString();
+                        }
                         break;
                     case "Vanilla":
-                        mFilledVanilla = mFilledVanilla - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
-                        txtVanillaFilled.Text = mFilledVanilla.ToString();
+                        if (mFilledVanilla > 0)
+                        {
+                            mFilledVanilla = mFilledVanilla - Int32.Parse(s.Substring(0, s.IndexOf(" ")));
+                            txtVanillaFilled.Text = mFilledVanilla.ToString();
+                        }
                         break;
                 }
             }
         }
         private void CtrlP_CommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            //handler pentru comanda Ctrl+P -> se executa glazedToolStripMenuItem_Click
-            MessageBox.Show("Ctrl+P Pressed");
-            this.glazedToolStripMenuItem_Click(sender, e);
-        }
-        private void CtrlC_CommandHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            //handler pentru comanda Ctrl+C -> se executa mnuCakeChocolate_Click
-            MessageBox.Show("Ctrl+Dbl Left Click or Ctrl+C or Alt+C Pressed");
-            this.chocolateFilledMenuItem_Click(sender, e);
+            MessageBox.Show("You have in stock:" + mRaisedGlazed + " Glazed," + mRaisedSugar + " Sugar," + mFilledLemon + " Lemon," + mFilledChocolate + " Chocolate," + mFilledVanilla + " Vanilla");
         }
 
         private void chocolateFilledMenuItem_Click(object sender, RoutedEventArgs e)
